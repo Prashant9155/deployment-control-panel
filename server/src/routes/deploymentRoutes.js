@@ -15,12 +15,17 @@ router.post("/deploy", async (req, res) => {
       status: "Pending",
     });
 
-    await deploymentQueue.add("deploy-job", {
+    console.log("API HIT");
+    console.log(req.body);
+
+    console.log("Adding Job To Queue");
+    await deploymentQueue.add("deploy", {
       deploymentId: deployment._id,
       clientName,
-      domain,
       image,
     });
+
+    console.log("Job Added");
 
     res.status(200).json({
       success: true,
@@ -38,9 +43,7 @@ router.post("/deploy", async (req, res) => {
 
 router.get("/status/:id", async (req, res) => {
   try {
-    const deployment = await Deployment.findById(
-      req.params.id
-    );
+    const deployment = await Deployment.findById(req.params.id);
 
     res.json(deployment);
   } catch (error) {

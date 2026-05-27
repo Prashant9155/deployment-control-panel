@@ -14,9 +14,7 @@ mongoose.connect(process.env.MONGO_URI);
 
 const execAsync = promisify(exec);
 
-const connection = new IORedis({
-  host: "127.0.0.1",
-  port: 6379,
+const connection = new IORedis(process.env.REDIS_URL, {
   maxRetriesPerRequest: null,
 });
 
@@ -28,14 +26,16 @@ const lambdaClient = new LambdaClient({
   },
 });
 
+console.log("Worker Started...");
+
 const worker = new Worker(
   "deploymentQueue",
   async (job) => {
+    console.log(job.data);
     const { deploymentId, clientName, image } = job.data;
 
     try {
       console.log("Starting Deployment...");
-
       await Deployment.findByIdAndUpdate(deploymentId, {
         status: "Running",
         logs: "Pulling Docker image...",
@@ -52,11 +52,11 @@ const worker = new Worker(
 
       // Run Docker Container
       await execAsync(`
-  docker run -d \
-  --name ${containerName} \
-  -p ${randomPort}:80 \
-  ${image}
-`);
+          docker run -d \
+          --name ${containerName} \
+          -p ${randomPort}:80 \
+             ${image}
+      `);
 
       const command = new InvokeCommand({
         FunctionName: process.env.LAMBDA_NAME,
