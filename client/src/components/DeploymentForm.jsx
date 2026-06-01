@@ -1,90 +1,156 @@
-function DeploymentForm({
-  formData,
-  handleChange,
-  handleDeploy,
-  loading,
-}) {
+function DeploymentForm({ formData, handleChange, handleDeploy, loading }) {
   return (
-    <div className="lg:col-span-2 bg-slate-900/70 border border-slate-800 rounded-3xl p-8 shadow-2xl backdrop-blur-xl">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h2 className="text-3xl font-bold text-white">
-            Create New Deployment
-          </h2>
+    <>
+      <div className="mb-6">
+        <p className="text-cyan-300 text-sm font-medium">
+          Interactive Deployment Runtime
+        </p>
 
-          <p className="text-slate-400 mt-2">
-            Deploy containerized applications with async queue
-            processing.
-          </p>
-        </div>
-
-        <div className="px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-300 text-sm">
-          Production Ready
-        </div>
+        <h2 className="text-3xl font-black text-white mt-2">
+          Launch Infrastructure Workflow
+        </h2>
       </div>
 
-      <form onSubmit={handleDeploy} className="space-y-6">
-        <div>
-          <label className="text-slate-300 mb-2 block text-sm font-medium">
-            Client Name
-          </label>
+      <div className="bg-slate-900/60 border border-slate-800 rounded-[28px] lg:rounded-4xl p-5 sm:p-6 lg:p-8 backdrop-blur-2xl shadow-2xl">
+        {/* Header */}
 
-          <input
-            type="text"
-            name="clientName"
-            placeholder="Netflix"
-            value={formData.clientName}
-            onChange={handleChange}
-            className="w-full bg-slate-950 text-white border border-slate-700 rounded-2xl px-5 py-4 outline-none focus:border-blue-500 transition-all"
-            required
-          />
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-5 mb-8">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-500/20 bg-cyan-500/10 text-cyan-300 text-xs mb-4">
+              <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse"></div>
+              Deployment Runtime
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl font-black text-white">
+              Create Deployment
+            </h2>
+
+            <p className="text-sm sm:text-base text-slate-400 mt-3 leading-relaxed max-w-xl">
+              Trigger containerized application deployment with async queue
+              processing and cloud infrastructure workflow.
+            </p>
+          </div>
+
+          <div className="w-fit px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-300 text-xs sm:text-sm">
+            Production Ready
+          </div>
         </div>
 
-        <div>
-          <label className="text-slate-300 mb-2 block text-sm font-medium">
-            Domain Name
-          </label>
+        {/* Form */}
+        <form onSubmit={handleDeploy} className="space-y-6">
+          {/* Client */}
+          {/* Project Name */}
+          <div>
+            <label className="text-slate-400 mb-2 block text-sm font-medium">
+              
+              Project Name
+            </label>
+            <input
+              type="text"
+              name="projectName"
+              value={formData.projectName}
+              onChange={handleChange}
+              placeholder="Netflix Clone"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white"
+            />
+          </div>
+          {/* Git Repository */}
+          <div>
+            
+            <label className="text-slate-400 mb-2 block text-sm font-medium">
+              
+              Git Repository URL
+            </label>
+            <input
+              type="url"
+              name="repositoryUrl"
+              value={formData.repositoryUrl}
+              onChange={handleChange}
+              placeholder="https://github.com/user/project"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white"
+            />
+          </div>
+          {/* Branch */}
+          <div>
+            
+            <label className="text-slate-400 mb-2 block text-sm font-medium">
+              
+              Branch
+            </label>
+            <input
+              type="text"
+              name="branch"
+              value={formData.branch}
+              onChange={handleChange}
+              placeholder="main"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white"
+            />
+          </div>
+          {/* Build Command */}
+          <div>
+            
+            <label className="text-slate-400 mb-2 block text-sm font-medium">
+              
+              Build Command
+            </label>
+            <input
+              type="text"
+              name="buildCommand"
+              value={formData.buildCommand}
+              onChange={handleChange}
+              placeholder="npm run build"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white"
+            />
+          </div>
+          {/* Start Command */}
+          <div>
+            
+            <label className="text-slate-400 mb-2 block text-sm font-medium">
+              
+              Start Command
+            </label>
+            <input
+              type="text"
+              name="startCommand"
+              value={formData.startCommand}
+              onChange={handleChange}
+              placeholder="npm start"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white"
+            />
+          </div>
+          {/* Footer */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pt-2">
+            <div className="flex flex-wrap gap-3 text-xs sm:text-sm text-slate-500">
+              <span>Docker</span>
 
-          <input
-            type="text"
-            name="domain"
-            placeholder="netflix.platform.com"
-            value={formData.domain}
-            onChange={handleChange}
-            className="w-full bg-slate-950 text-white border border-slate-700 rounded-2xl px-5 py-4 outline-none focus:border-blue-500 transition-all"
-            required
-          />
-        </div>
+              <span>•</span>
 
-        <div>
-          <label className="text-slate-300 mb-2 block text-sm font-medium">
-            Docker Image
-          </label>
+              <span>BullMQ</span>
 
-          <input
-            type="text"
-            name="image"
-            placeholder="nginx:latest"
-            value={formData.image}
-            onChange={handleChange}
-            className="w-full bg-slate-950 text-white border border-slate-700 rounded-2xl px-5 py-4 outline-none focus:border-blue-500 transition-all"
-            required
-          />
-        </div>
+              <span>•</span>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg ${
-            loading
-              ? "bg-slate-700 text-slate-400 cursor-not-allowed"
-              : "bg-linear-to-r from-blue-600 to-cyan-500 hover:scale-[1.01] text-white shadow-blue-500/20"
-          }`}
-        >
-          {loading ? "Deploying..." : "Deploy Application"}
-        </button>
-      </form>
-    </div>
+              <span>Redis Cloud</span>
+
+              <span>•</span>
+
+              <span>AWS Lambda</span>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full lg:w-auto px-8 py-3.5 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-300 ${
+                loading
+                  ? "bg-slate-800 text-slate-500 cursor-not-allowed"
+                  : "bg-linear-to-r from-blue-600 to-cyan-500 text-white hover:scale-[1.02]"
+              }`}
+            >
+              {loading ? "Deploying..." : "Deploy Application"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 }
 

@@ -2,19 +2,44 @@ import mongoose from "mongoose";
 
 const deploymentSchema = new mongoose.Schema(
   {
+    // Legacy fields
     clientName: {
       type: String,
-      required: true,
     },
 
     domain: {
       type: String,
-      required: true,
     },
 
     image: {
       type: String,
-      required: true,
+    },
+
+    // New DeployFlow fields
+    projectName: {
+      type: String,
+    },
+
+    repositoryUrl: {
+      type: String,
+    },
+
+    branch: {
+      type: String,
+      default: "main",
+    },
+
+    buildCommand: {
+      type: String,
+    },
+
+    startCommand: {
+      type: String,
+    },
+
+    environmentVariables: {
+      type: Object,
+      default: {},
     },
 
     status: {
