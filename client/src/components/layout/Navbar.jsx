@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import resumePdf from "../../assets/Prashant_kumar_Software_Engineer_3yrs.pdf";
+
 
 export default function Navbar() {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -68,18 +68,10 @@ export default function Navbar() {
     }
   };
 
-  const downloadResume = () => {
-    const link = document.createElement("a");
-
-    link.href = resumePdf;
-    link.download = "Prashant-Kumar-Resume.pdf";
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    setShowResumeModal(false);
-  };
+ const downloadResume = () => {
+  window.open("/resume.pdf", "_blank");
+  setShowResumeModal(false);
+};
 
   return (
     <>
