@@ -8,6 +8,8 @@ dotenv.config();
 
 const app = express();
 
+app.disable("etag");
+
 app.use(cors());
 app.use(express.json());
 
@@ -25,6 +27,16 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+if (process.env.RUN_WORKER === "true") {
+  import("./workers/deploymentWorker.js")
+    .then(() => {
+      console.log("Deployment worker enabled");
+    })
+    .catch((err) => {
+      console.log("Failed to start deployment worker", err);
+    });
+}
 
 const PORT = process.env.PORT || 8000;
 

@@ -10,7 +10,9 @@ import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URI);
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(process.env.MONGO_URI);
+}
 
 const execAsync = promisify(exec);
 
@@ -72,21 +74,6 @@ const worker = new Worker(
 
       console.log("Lambda Response:", lambdaResponse);
 
-      // Success Update
-      await Deployment.findByIdAndUpdate(deploymentId, {
-        status: "Completed",
-        logs: `Container deployed on port ${randomPort}`,
-      });
-
-      console.log("Deployment Completed");
-
-      // Success Update
-      await Deployment.findByIdAndUpdate(deploymentId, {
-        status: "Completed",
-        logs: `Container deployed on port ${randomPort}`,
-      });
-
-      // Success Update
       await Deployment.findByIdAndUpdate(deploymentId, {
         status: "Completed",
         logs: `Container deployed on port ${randomPort}`,

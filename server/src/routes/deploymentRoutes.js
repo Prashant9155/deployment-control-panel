@@ -66,9 +66,12 @@ router.post("/deploy", async (req, res) => {
 
 router.get("/status/:id", async (req, res) => {
   try {
-    const deployment = await Deployment.findById(
-      req.params.id
-    );
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
+    res.set("Surrogate-Control", "no-store");
+
+    const deployment = await Deployment.findById(req.params.id);
 
     if (!deployment) {
       return res.status(404).json({
