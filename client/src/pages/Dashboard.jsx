@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../services/api";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import DeploymentSection from "../components/sections/DeploymentSection";
@@ -49,7 +50,7 @@ function Dashboard() {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/deploy",
+        `${API_BASE_URL}/api/deploy`,
         payload,
       );
 
@@ -69,7 +70,7 @@ function Dashboard() {
     const interval = setInterval(async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/status/${deploymentId}`,
+          `${API_BASE_URL}/api/status/${deploymentId}`,
         );
 
         setDeploymentStatus(response.data.status);

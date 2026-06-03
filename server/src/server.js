@@ -16,9 +16,6 @@ app.use("/api", deploymentRoutes);
 app.get("/", (req, res) => {
   res.send("Server Running");
 });
-app.get("/", (req, res) => {
-  res.send("Backend Running");
-});
 
 mongoose
   .connect(process.env.MONGO_URI)
