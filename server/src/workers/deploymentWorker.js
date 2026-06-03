@@ -29,6 +29,7 @@ const lambdaClient = new LambdaClient({
 });
 
 const deploymentRuntime =
+console.log("Runtime:", deploymentRuntime);
   process.env.DEPLOYMENT_RUNTIME ||
   (process.env.NODE_ENV === "production" ? "lambda" : "docker");
 
