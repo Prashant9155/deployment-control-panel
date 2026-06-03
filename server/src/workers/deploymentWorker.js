@@ -28,6 +28,24 @@ const lambdaClient = new LambdaClient({
   },
 });
 
+const deploymentRuntime =
+  process.env.DEPLOYMENT_RUNTIME ||
+  (process.env.NODE_ENV === "production" ? "lambda" : "docker");
+
+const invokeDeploymentLambda = async ({ clientName, image, deploymentId }) => {
+  const command = new InvokeCommand({
+    FunctionName: process.env.LAMBDA_NAME,
+    InvocationType: "RequestResponse",
+    Payload: JSON.stringify({
+      clientName,
+      image,
+      deploymentId,
+    }),
+  });
+
+  return lambdaClient.send(command);
+};
+
 console.log("Worker Started...");
 
 const worker = new Worker(
@@ -40,8 +58,29 @@ const worker = new Worker(
       console.log("Starting Deployment...");
       await Deployment.findByIdAndUpdate(deploymentId, {
         status: "Running",
-        logs: "Pulling Docker image...",
+        logs:
+          deploymentRuntime === "lambda"
+            ? "Starting production deployment with AWS Lambda..."
+            : "Pulling Docker image...",
       });
+
+      if (deploymentRuntime === "lambda") {
+        const lambdaResponse = await invokeDeploymentLambda({
+          clientName,
+          image,
+          deploymentId,
+        });
+
+        console.log("Lambda Response:", lambdaResponse);
+
+        await Deployment.findByIdAndUpdate(deploymentId, {
+          status: "Completed",
+          logs: "Production deployment triggered with AWS Lambda",
+        });
+
+        console.log("Deployment Completed");
+        return;
+      }
 
       // Pull Docker Image
       await execAsync(`docker pull ${image}`);
@@ -59,20 +98,6 @@ const worker = new Worker(
           -p ${randomPort}:80 \
              ${image}
       `);
-
-      const command = new InvokeCommand({
-        FunctionName: process.env.LAMBDA_NAME,
-        InvocationType: "RequestResponse",
-        Payload: JSON.stringify({
-          clientName,
-          image,
-          deploymentId,
-        }),
-      });
-
-      const lambdaResponse = await lambdaClient.send(command);
-
-      console.log("Lambda Response:", lambdaResponse);
 
       await Deployment.findByIdAndUpdate(deploymentId, {
         status: "Completed",
