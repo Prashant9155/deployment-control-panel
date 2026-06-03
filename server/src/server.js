@@ -6,6 +6,20 @@ import deploymentRoutes from "./routes/deploymentRoutes.js";
 
 dotenv.config();
 
+console.log("RUN_WORKER =", process.env.RUN_WORKER);
+console.log(
+  "DEPLOYMENT_RUNTIME =",
+  process.env.DEPLOYMENT_RUNTIME
+);
+console.log(
+  "NODE_ENV =",
+  process.env.NODE_ENV
+);
+console.log(
+  "LAMBDA_NAME =",
+  process.env.LAMBDA_NAME
+);
+
 const app = express();
 
 app.disable("etag");
